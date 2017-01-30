@@ -1,0 +1,11 @@
+exports[`test only child is rendered 1`] = `
+<div>
+  hello
+</div>
+`;
+
+exports[`test store should be present in child's context 1`] = `
+<div>
+  toto
+</div>
+`;
