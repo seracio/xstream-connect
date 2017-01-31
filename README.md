@@ -15,6 +15,7 @@ but to substitute async middlewares, reducers and derived data (typically comput
 ## Install
 
 ```
+yarn add lodash react react-dom xstream
 yarn add xstream-connect
 ```
 
