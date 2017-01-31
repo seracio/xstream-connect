@@ -10,7 +10,7 @@ You should probably not use this module.
 
 The goal here is not to provide an async middleware to redux with Observables, as [redux-cycle-middleware](https://github.com/cyclejs-community/redux-cycle-middleware) 
 and [redux-observable](https://github.com/redux-observable/redux-observable) 
-but to substitute async middlewares, reducers and derived data (typically computed with reselect) by Observables.    
+but to replace async middlewares, reducers and derived data (typically computed with reselect) by Observables.    
 
 ## Install
 
