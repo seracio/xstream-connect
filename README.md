@@ -52,13 +52,14 @@ ReactDOM.render(
 );
 ```
 
-### How to catch action from the user?
+### How to catch actions from the user?
  
 At this very moment, you have to expose a Subject $actions...
+
 Something like that:
     
 ```javascript
-// store.js
+// store/index.js
 import _ from 'lodash/fp';
 import xs from 'xstream';
 
@@ -72,7 +73,7 @@ export const myCounter$ = actions$
 ```    
 
 ```javascript
-// App.js
+// components/App.js
 import React from 'react';
 import {connect} from 'xstream-connect';
 import {actions$} from '../store'; // Crappy
