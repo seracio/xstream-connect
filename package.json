@@ -5,12 +5,6 @@
   "repository": "https://github.com/seracio/xstream-connect.git",
   "author": "nicolasmondon <nicolasmondon@gmail.com>",
   "license": "MIT",
-  "peerDependencies": {
-    "lodash": ">=4.17.4",
-    "react": ">=15.4.2",
-    "react-dom": ">=15.4.2",
-    "xstream": ">=9.3.0"
-  },
   "devDependencies": {
     "babel-cli": "^6.22.2",
     "babel-core": "^6.22.1",
@@ -22,14 +16,16 @@
     "babel-preset-stage-2": "^6.22.0",
     "flow-bin": "^0.38.0",
     "jest": "^18.1.0",
-    "lodash": ">=4.17.4",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "react-test-renderer": "^15.4.2",
-    "xstream": "^9.3.0"
+    "react-test-renderer": "^15.4.2"
   },
   "scripts": {
     "test": "./node_modules/.bin/jest",
     "build": "./node_modules/.bin/babel src --out-dir lib --ignore test.js"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "xstream": "^9.3.0"
   }
 }
