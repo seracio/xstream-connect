@@ -45,9 +45,7 @@ const connect = storeToPropsFunc => WrappedComponent => {
 
     render() {
       const propsToTransfer = {...this.props, ...this.state};
-      return this.go
-        ? <WrappedComponent {...propsToTransfer}/>
-        : <div>waiting</div>;
+      return this.go && <WrappedComponent {...propsToTransfer}/>;
     }
   }
   Connect.contextTypes = {
