@@ -1,8 +1,18 @@
 # xstream-connect
 
-higher order component to plug xstream streams to React components
+higher order component to plug [xstream](https://github.com/staltz/xstream) as a store with React components
 
 [![Build Status](https://travis-ci.org/seracio/xstream-connect.svg?branch=master)](https://travis-ci.org/seracio/xstream-connect)
+
+## Disclaimer
+
+You should probably not use this module (in production) 
+
+## Install
+
+```
+yarn add xstream-connect
+```
 
 ## Usage
 
