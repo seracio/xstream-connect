@@ -6,29 +6,22 @@ import xs from 'xstream';
 const keyByWithIndex = _.keyBy.convert({cap: false});
 
 const connect = storeToPropsFunc => WrappedComponent => {
-
   class Connect extends React.Component {
-
     constructor(props, context) {
       super(props, context);
-
       // flag
       this.go = false;
-
       // the fragment of the store we'll listen
       this.fragment = storeToPropsFunc(this.context.store);
-
       // order
       // needed for the listen method
       this.order = _.keys(this.fragment);
-
       // initiate the state
       // to null
       this.state = _.mapValues(
         _.constant(null),
         this.fragment
       );
-
       this.listen();
     }
 
@@ -47,11 +40,9 @@ const connect = storeToPropsFunc => WrappedComponent => {
     }
 
   }
-
   Connect.contextTypes = {
     store: React.PropTypes.object.isRequired,
   };
-
   return WrappedComponent;
 };
 
