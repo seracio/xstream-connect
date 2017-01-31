@@ -3,7 +3,7 @@ import _ from 'lodash/fp';
 import React from 'react';
 import xs from 'xstream';
 
-const keyByWithIndex = _.keyBy.convert({cap: false});
+const mapWithIndex = _.map.convert({cap: false});
 
 const connect = storeToPropsFunc => WrappedComponent => {
   class Connect extends React.Component {
@@ -22,28 +22,39 @@ const connect = storeToPropsFunc => WrappedComponent => {
         _.constant(null),
         this.fragment
       );
+    }
+
+    componentDidMount(){
       this.listen();
     }
 
     listen() {
       xs.combine(..._.map(key => this.fragment[key], this.order))
-        .addListener(values => {
-          this.go = true;
-          this.setState(keyByWithIndex((value, index) => this.order[index], values));
+        .addListener({
+          next: values => {
+            this.go = true;
+            const state = _.flow(
+              mapWithIndex((value, index) => ({ key: this.order[index], value })),
+              _.keyBy(_.get('key')),
+              _.mapValues(_.get('value'))
+            )(values);
+            this.setState(state);
+          }
         });
     }
 
     render() {
+      const propsToTransfer = {...this.props, ...this.state};
       return this.go
-        ? <WrappedComponent {{...this.props, ...this.state}}/>
+        ? <WrappedComponent {...propsToTransfer}/>
         : <div>waiting</div>;
     }
-
   }
   Connect.contextTypes = {
     store: React.PropTypes.object.isRequired,
   };
-  return WrappedComponent;
+
+  return Connect;
 };
 
 export default connect;
