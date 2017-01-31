@@ -1,6 +1,6 @@
 {
   "name": "xstream-connect",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "lib/index.js",
   "repository": "https://github.com/seracio/xstream-connect.git",
   "author": "nicolasmondon <nicolasmondon@gmail.com>",
