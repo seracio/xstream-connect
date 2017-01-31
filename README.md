@@ -54,8 +54,8 @@ ReactDOM.render(
 
 ### How to catch actions from the user?
 
-At this very moment, we have not decided of a proper way to do this canonically.
-There are several ways to achieve this, for instance you can dirtily expose a Subject $actions...
+Currently, we have not decided yet how to handle this.
+For the time being, there are several ways to achieve this, for instance you can dirtily expose a Subject $actions...
 Something like that:
     
 ```javascript
