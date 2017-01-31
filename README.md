@@ -69,7 +69,8 @@ export const actions$ = xs.create().remember();
 export const myCounter$ = actions$
   .filter(_.flow(_.get('type'),_.isEqual('increment')))
   .fold((acc, ping) => acc + ping, 0)
-  .startWith(0);
+  .startWith(0)
+  .remember();
 ```    
 
 ```javascript
