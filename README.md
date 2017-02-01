@@ -61,7 +61,7 @@ ReactDOM.render(
 ### Store and the Provider component
 
 With this architecture, all the logic resides in Observables, the store is just a hash/dictionary of Obserables you want to expose to React.
-As it, the Provider component only adds this store/dictionary into the React context.  
+So the Provider component only adds this store/dictionary into the React context.  
    
 ```javascript
 // main.js
@@ -108,7 +108,7 @@ export default connect(
 ### How to dispatch actions from the React layer to the store ?
 
 There is no canonical way to achieve this. This is your choice... 
-For instance, you can do as this :
+For instance, you can do as this:
 * in your store, expose a *dispatcher$* Observable of Observable, as this the React layer could have a Subject to inject actions  
 * in your store, create an *actions$* Observable that flatten *dispatcher$*    
 
