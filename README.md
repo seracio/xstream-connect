@@ -160,7 +160,7 @@ class MyComponent extends React.Component {
 export default connect(
   state => ({
     // The trick is here
-    // the value of state.actionsProvider$ is the Observable actions$
+    // the value of state.actionsProvider$ is an Observable that can trigger side effects
     dispatcher: state.dispatcher$,
     counter: state.counter$,
   })
