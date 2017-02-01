@@ -40,3 +40,5 @@ test('Provider: props store should be mandatory', () => {
   );
   expect(console.error).toHaveBeenCalledTimes(2);
 });
+
+
