@@ -8,7 +8,7 @@ higher order component to plug [xstream](https://github.com/staltz/xstream) as a
 
 The goal here is not to provide an async middleware to redux with Observables, as [redux-cycle-middleware](https://github.com/cyclejs-community/redux-cycle-middleware) 
 and [redux-observable](https://github.com/redux-observable/redux-observable) do 
-but to replace *async middlewares*, *reducers* and *derived data* (typically computed with reselect) by *Observables*.
+but to replace *async middlewares*, *reducers* and *derived data* (typically computed with reselect) with *Observables*.
 As this, we can express each variable of the store as a function of other variables, in a clean and async way.
 
 [xstream](https://github.com/staltz/xstream)'s Observables are the perfect tool to achieve this purpose, as they are hot
