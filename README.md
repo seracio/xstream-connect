@@ -61,7 +61,7 @@ ReactDOM.render(
 ### Store and the Provider component
 
 With this architecture, all the logic resides in Observables, the store is just a hash/dictionary of Obserables you want to expose to React.
-As its The Provider component only add this dictionary into the React context.  
+As it, the Provider component only adds this store/dictionary into the React context.  
    
 ```javascript
 // main.js
