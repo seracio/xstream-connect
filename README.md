@@ -170,7 +170,7 @@ export default connect(
 
 ## Why don't you use [cycle.js](https://cycle.js.org)?
 
-[cycle.js](https://cycle.js.org) is neat, but we kinda like the React/redux architecture... and also tired of the growing complexity of the redux layer when you want to manage asynchronicity.
+[cycle.js](https://cycle.js.org) is neat, but we kinda like the React/redux architecture... and are also tired of the growing complexity of the redux layer when you want to manage asynchronicity.
 
 ## License
 
