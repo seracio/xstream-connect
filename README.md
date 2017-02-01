@@ -142,7 +142,7 @@ import * as store from './store'; // dispatcher$ is exposed
 // ...
 ```
 
-* via the *connect* method to *actionsProvider$*, retrieve *actions$* into your component's props:
+* via the *connect* method to *actionsProvider$*, retrieve an O into your component's props:
 
 ```javascript
 // components/MyComponent.js
