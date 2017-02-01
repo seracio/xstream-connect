@@ -1,0 +1,13 @@
+exports[`test Connect component: fragment attribute should contains keys specified by the storeToPropsFunc parameter 1`] = `
+<div>
+  world
+</div>
+`;
+
+exports[`test Connect component: should only render the WrappedComponent when go === true 1`] = `
+<div>
+  hello
+</div>
+`;
+
+exports[`test Connect component: should render false when state.go === false 1`] = `null`;

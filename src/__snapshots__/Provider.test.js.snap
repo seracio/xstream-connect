@@ -1,11 +1,11 @@
-exports[`test only child is rendered 1`] = `
+exports[`test Provider: only the child should be rendered 1`] = `
 <div>
-  hello
+  hello world
 </div>
 `;
 
-exports[`test store should be present in child's context 1`] = `
+exports[`test Provider: the child component should have a context with a key "store" 1`] = `
 <div>
-  toto
+  hello world
 </div>
 `;

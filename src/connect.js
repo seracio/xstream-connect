@@ -6,6 +6,11 @@ import xs from 'xstream';
 const mapWithIndex = _.map.convert({cap: false});
 
 const connect = storeToPropsFunc => WrappedComponent => {
+
+  if(typeof(storeToPropsFunc) !== 'function'){
+    throw new Error('xstream-connect: connect needs a function storeToPropsFunc as parameter');
+  }
+
   class Connect extends React.Component {
     constructor(props, context) {
       super(props, context);
