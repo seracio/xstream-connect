@@ -4,7 +4,13 @@ higher order component to plug [xstream](https://github.com/staltz/xstream) as a
 
 [![Build Status](https://travis-ci.org/seracio/xstream-connect.svg?branch=master)](https://travis-ci.org/seracio/xstream-connect)
 
-## Disclaimer
+## Install
+
+```
+yarn add xstream-connect
+```
+
+## Principle
 
 The goal here is not to provide an async middleware to redux with Observables, as [redux-cycle-middleware](https://github.com/cyclejs-community/redux-cycle-middleware) 
 and [redux-observable](https://github.com/redux-observable/redux-observable) do 
@@ -12,15 +18,11 @@ but to replace *async middlewares*, *reducers* and *derived data* (typically com
 As this, we can express each variable of the store as a function of other variables, in a clean and async way.
 
 [xstream](https://github.com/staltz/xstream)'s Observables are the perfect tool to achieve this purpose, as they are hot
-and can be transformed easily into Subject / BehaviorSubject.
- 
-## Install
+and can be easily transformed into BehaviorSubject (via the *render* method).
 
-```
-yarn add xstream-connect
-```
+This library only exposes a component *Provider* and an higher order function *connect* to connect your store to the React layer in a *react-redux* fashion.  
 
-## Usage
+## Basic example
 
 ```javascript
 import React from 'react';
@@ -54,54 +56,121 @@ ReactDOM.render(
 );
 ```
 
-### How to catch actions from the user?
+## Architecture
 
-Currently, we have not decided yet how to handle this.
-For the time being, there are several ways to achieve this, for instance you can dirtily expose a Subject $actions...
-Something like that:
-    
+### Store and the Provider component
+
+With this architecture, all the logic resides in Observables, the store is just a hash/dictionary of Obserables you want to expose to React.
+As its The Provider component only add this dictionary into the React context.  
+   
 ```javascript
-// store/index.js
+// main.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Provider} from 'xstream-connect';
+import * as store from './store'; // <---- your store is just a dictionnary of exposed Observables
+
+ReactDOM.render(
+  <Provider store={store}> {/* <-- plugged your store to the React layer */}
+    <Connected />
+  </Provider>,
+  document.querySelector('#root')
+);
+
+```
+
+### The connect function
+
+The *connect* function is far more basic than its *react-redux* counterpart, currently it just takes a *mapStateToProps* function as parameter.
+The *connect* function will listen to all Observables provided in the *mapStateToProps* and deliver their values into the props with the right key. 
+ 
+```javascript
+// components/MyComp.js
+import React from 'react';
+import {connect} from 'xstream-connect'; 
+
+class MyComp extends React.Component {   
+  render(){
+    return <div>{this.props.counter}</div>
+  }
+}
+
+export default connect(
+  // mapStateToProps parameter
+  // in  this example, we map the value of the Observable *counter$* in a *counter* props 
+  state => ({   
+    counter: state.counter$  
+  })
+)(MyComp);
+
+```
+
+### How to dispatch actions from the React layer to the store ?
+
+There is no canonical way to achieve this. This is your choice... 
+For instance, you can do as this :
+* in your store, expose a *dispatcher$* Observable of Observable, as this the React layer could have a Subject to inject actions  
+* in your store, create an *actions$* Observable that flatten *dispatcher$*    
+
+```javascript
+// store index.js
 import _ from 'lodash/fp';
 import xs from 'xstream';
 
-// 
-export const actions$ = xs.create().remember();
+export const dispatcher$ = xs.of(xs.create()).remember();
+const actions$ = dispatcher$.flatten().remember();
 
-export const myCounter$ = actions$
-  .filter(_.flow(_.get('type'),_.isEqual('increment')))
-  .fold((acc, ping) => acc + 1, 0)
+// little helper
+// to check if an action is of a certain type
+const isType = type => _.flow(_.get('type'), _.isEqual(type));
+
+// an exposed Observable that depends on an action
+export const counter$ = actions$
+  .filter(isType('increment'))
+  .fold(acc => acc + 1, 0)
   .startWith(0)
   .remember();
-```    
+```
+
+* expose your store into the React layer context 
 
 ```javascript
-// components/App.js
-import React from 'react';
-import {connect} from 'xstream-connect';
-import {actions$} from '../store'; // Crappy
+// main.js
+import {Provider} from 'xstream-connect';
+import * as store from './store'; // dispatcher$ is exposed 
 
-class App extends React.Component {
+// ...
+```
+
+* via the *connect* method to *actionsProvider$*, retrieve *actions$* into your component's props:
+
+```javascript
+// components/MyComponent.js
+import {connect} from 'xstream-connect';
+
+class MyComponent extends React.Component {
   
-  handleClick = () => actions$.shamefullySendNext({type: 'increment'});
- 
+  handleClick = () => this.props.dispatcher.shamefullySendNext({type: 'increment'})
+  
   render(){
-    return (
-      <div onClick={this.handleClick}>
-        {this.props.counter}      
-      </div>      
-    );   
+    return <div onClick={this.handleClick}>{this.props.counter}</div>;
   }
-  
 }
 
 export default connect(
   state => ({
-    counter: state.myCounter$
-  })  
-)(App);
-
+    // The trick is here
+    // the value of state.actionsProvider$ is the Observable actions$
+    dispatcher: state.dispatcher$,
+    counter: state.counter$,
+  })
+)(MyComponent);
+// ...
 ```
+
+## Why don't you use [cycle.js](https://cycle.js.org)?
+
+[cycle.js](https://cycle.js.org) is neat, but we kinda like the React/redux architecture... and also tired of the growing complexity of the redux layer when you want to manage asynchronicity.
 
 ## License
 
