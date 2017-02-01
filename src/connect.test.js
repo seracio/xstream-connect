@@ -4,8 +4,6 @@ import xs from 'xstream';
 import connect from './connect';
 import Provider from './Provider';
 
-test('should', () => {
-
-
+test('', () => {
 
 });

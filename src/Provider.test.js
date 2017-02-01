@@ -2,38 +2,41 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import Provider from './Provider';
 
-test('only child is rendered', () => {
+test('Provider: only the child should be rendered', () => {
   const component = renderer.create(
     <Provider store={{test: 'test'}}>
-      <div>hello</div>
+      <div>hello world</div>
     </Provider>
   );
   const tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-test.skip('store props is mandatory', () => {
-  expect(() =>
-    renderer.create(<Provider><div>hello</div></Provider>)
-  ).toThrow();
-});
-
-test('store should be present in child\'s context', () => {
-  class Child extends React.Component {
+test('Provider: the child component should have a context with a key "store"', () => {
+  class App extends React.Component {
     render(){
-      return (
-        <div>
-          {this.context.store.test}
-        </div>
-      );
+      return <div>{this.context.store.hello}</div>
     }
   }
-  Child.contextTypes = {
+  App.contextTypes = {
     store: React.PropTypes.object.isRequired
   };
+
   const component = renderer.create(
-    <Provider store={{test: 'toto'}}><Child /></Provider>
+    <Provider store={{hello: 'hello world'}}>
+      <App />
+    </Provider>
   );
   const tree = component.toJSON();
   expect(tree).toMatchSnapshot();
+});
+
+test('Provider: props store should be mandatory', () => {
+  console.error = jest.fn();
+  renderer.create(
+    <Provider>
+      <div>hello world</div>
+    </Provider>
+  );
+  expect(console.error).toHaveBeenCalledTimes(2);
 });
