@@ -18,7 +18,7 @@ but to replace *redux* and its different slices (*async middlewares*, *reducers*
 As this, we can express each variable of the store as a function of other variables, in a clean and async way.
 
 [xstream](https://github.com/staltz/xstream)'s Observables are the perfect tool to achieve this purpose, as they are hot
-and can be easily transformed into BehaviorSubject (via the *render* method).
+and can be easily transformed into BehaviorSubject (via the *remember* method).
 
 This library only exposes a component *Provider* and an higher order function *connect* to connect your store to the React layer in a *react-redux* fashion.  
 
