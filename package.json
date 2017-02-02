@@ -1,7 +1,10 @@
 {
   "name": "xstream-connect",
-  "keywords": ["react", "xstream"],
-  "version": "0.2.0",
+  "keywords": [
+    "react",
+    "xstream"
+  ],
+  "version": "0.2.1",
   "main": "lib/index.js",
   "repository": "https://github.com/seracio/xstream-connect.git",
   "author": "nicolasmondon <nicolasmondon@gmail.com>",
