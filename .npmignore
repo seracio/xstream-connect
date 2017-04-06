@@ -1,4 +1,4 @@
-src
 .babelrc
 .flowconfig
 .travis.yml
+webpack.config.js
