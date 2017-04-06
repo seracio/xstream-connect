@@ -7,7 +7,7 @@ higher order component to plug [xstream](https://github.com/staltz/xstream) as a
 ## Install
 
 ```
-yarn add xstream-connect
+yarn add @seracio/xstream-connect
 ```
 
 ## Disclaimer
