@@ -5,7 +5,7 @@
     "xstream"
   ],
   "version": "1.0.0",
-  "main": "dist/xstreamConnect",
+  "main": "dist/xstream-connect.js",
   "module": "src/index.js",
   "repository": "https://github.com/seracio/xstream-connect.git",
   "author": "nicolasmondon <nicolasmondon@gmail.com>",
