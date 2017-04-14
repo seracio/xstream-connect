@@ -1,12 +1,6 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var _ = _interopDefault(require('lodash/fp'));
-var React = _interopDefault(require('react'));
-var xs = _interopDefault(require('xstream'));
+import _ from 'lodash/fp';
+import React from 'react';
+import xs from 'xstream';
 
 //      
 var mapWithIndex = _.map.convert({cap: false});
@@ -104,5 +98,4 @@ Provider.childContextTypes = {
   store: React.PropTypes.object.isRequired,
 };
 
-exports.connect = connect;
-exports.Provider = Provider;
+export { connect, Provider };
