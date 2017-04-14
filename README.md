@@ -12,7 +12,7 @@ yarn add @seracio/xstream-connect
 
 ## Disclaimer
 
-This package feets well the way we work and the problems we faces 
+This package feets well the way we work and the problems we face 
 (small size stores but complex async workflow on derived data). 
 It's mostly intended to our own developments and is not well tested.
 
