@@ -4,7 +4,7 @@
     "react",
     "xstream"
   ],
-  "version": "1.0.1",
+  "version": "2.0.0",
   "main": "dist/xstream-connect.js",
   "module": "dist/xstream-connect.es6.js",
   "repository": "https://github.com/seracio/xstream-connect.git",
