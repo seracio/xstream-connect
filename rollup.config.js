@@ -1,13 +1,9 @@
-const _ = require('lodash');
 const fs = require('fs');
 const buble = require('rollup-plugin-buble');
 const commonjs = require('rollup-plugin-commonjs');
 const flow = require('rollup-plugin-flow');
 const resolve = require('rollup-plugin-node-resolve');
-
-const
-  readJSON = _.flow(fs.readFileSync, JSON.parse),
-  pkg = readJSON('package.json');
+const pkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
 module.exports = {
   entry: 'src/index.js',
