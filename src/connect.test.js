@@ -1,4 +1,5 @@
 import _ from 'lodash/fp';
+import PropTypes from 'prop-types';
 import React from 'react';
 import renderer from 'react-test-renderer';
 import xs from 'xstream';
@@ -69,7 +70,7 @@ test('Connect component: fragment attribute should contains keys specified by th
     }
   }
   MyOtherComponent.propTypes = {
-    hello: React.PropTypes.string.isRequired
+    hello: PropTypes.string.isRequired
   };
   const MyComponentWrapped = connect(state => ({
     hello: state.hello$

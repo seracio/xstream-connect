@@ -7,7 +7,7 @@ higher order component to plug [xstream](https://github.com/staltz/xstream) as a
 ## Install
 
 ```
-yarn add @seracio/xstream-connect
+yarn add react react-dom prop-types xstream @seracio/xstream-connect
 ```
 
 ## Disclaimer

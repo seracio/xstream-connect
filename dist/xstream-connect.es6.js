@@ -1,12 +1,6 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var PropTypes = _interopDefault(require('prop-types'));
-var React = _interopDefault(require('react'));
-var xs = _interopDefault(require('xstream'));
+import PropTypes from 'prop-types';
+import React from 'react';
+import xs from 'xstream';
 
 //      
 var connect = function (storeToPropsFunc) { return function (WrappedComponent) {
@@ -109,5 +103,4 @@ Provider.childContextTypes = {
   store: PropTypes.object.isRequired,
 };
 
-exports.connect = connect;
-exports.Provider = Provider;
+export { connect, Provider };
