@@ -4,17 +4,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var _ = _interopDefault(require('lodash/fp'));
 var PropTypes = _interopDefault(require('prop-types'));
 var React = _interopDefault(require('react'));
 var xs = _interopDefault(require('xstream'));
 
 //      
-var mapWithIndex = _.map.convert({cap: false});
-
 var connect = function (storeToPropsFunc) { return function (WrappedComponent) {
 
-  if(typeof(storeToPropsFunc) !== 'function'){
+  if (typeof(storeToPropsFunc) !== 'function') {
     throw new Error('xstream-connect: connect needs a function storeToPropsFunc as parameter');
   }
 
@@ -27,35 +24,41 @@ var connect = function (storeToPropsFunc) { return function (WrappedComponent) {
       this.fragment = storeToPropsFunc(this.context.store);
       // order
       // needed for the listen method
-      this.order = _.keys(this.fragment);
+      this.order = Object.keys(this.fragment);
       // initiate the state
       // to null
-      this.state = _.mapValues(
-        _.constant(null),
-        this.fragment
-      );
+      this.state = this
+        .order
+        .reduce(
+          function (acc, key) { return (( obj = Object.assign({}, acc), obj[key] = null, obj ))
+            var obj; },
+          {}
+        );
     }
 
     if ( superclass ) Connect.__proto__ = superclass;
     Connect.prototype = Object.create( superclass && superclass.prototype );
     Connect.prototype.constructor = Connect;
 
-    Connect.prototype.componentDidMount = function componentDidMount (){
+    Connect.prototype.componentDidMount = function componentDidMount () {
       this.listen();
     };
 
     Connect.prototype.listen = function listen () {
       var this$1 = this;
 
-      xs.combine.apply(xs, _.map(function (key) { return this$1.fragment[key]; }, this.order))
+      // a combine on all streams
+      xs.combine.apply(xs, this.order.map(function (key) { return this$1.fragment[key]; }))
         .addListener({
           next: function (values) {
+            // render is OK
             this$1.go = true;
-            var state = _.flow(
-              mapWithIndex(function (value, index) { return ({ key: this$1.order[index], value: value }); }),
-              _.keyBy(_.get('key')),
-              _.mapValues(_.get('value'))
-            )(values);
+            // update the state
+            var state = values.reduce(
+              function (acc, value, index) { return (( obj = Object.assign({}, acc), obj[this$1.order[index]] = value, obj ))
+                var obj; },
+              {}
+            );
             this$1.setState(state);
           }
         });
@@ -68,6 +71,7 @@ var connect = function (storeToPropsFunc) { return function (WrappedComponent) {
 
     return Connect;
   }(React.Component));
+
   Connect.contextTypes = {
     store: PropTypes.object.isRequired,
   };

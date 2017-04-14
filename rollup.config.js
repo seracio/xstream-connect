@@ -19,7 +19,7 @@ module.exports = {
     format: 'es'
   }],
   sourceMap: false,
-  external: ['react', 'xstream', 'lodash/fp', 'prop-types'],
+  external: ['react', 'xstream', 'prop-types'],
   plugins: [
     commonjs(),
     resolve(),
