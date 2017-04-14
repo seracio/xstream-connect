@@ -1,4 +1,5 @@
 // @flow
+import PropTypes from 'prop-types';
 import React from 'react';
 
 class Provider extends React.Component {
@@ -18,11 +19,11 @@ class Provider extends React.Component {
 }
 
 Provider.propTypes = {
-  store: React.PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
 };
 
 Provider.childContextTypes = {
-  store: React.PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
 };
 
 export default Provider;

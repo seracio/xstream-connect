@@ -1,4 +1,5 @@
 import _ from 'lodash/fp';
+import PropTypes from 'prop-types';
 import React from 'react';
 import xs from 'xstream';
 
@@ -62,7 +63,7 @@ var connect = function (storeToPropsFunc) { return function (WrappedComponent) {
     return Connect;
   }(React.Component));
   Connect.contextTypes = {
-    store: React.PropTypes.object.isRequired,
+    store: PropTypes.object.isRequired,
   };
 
   return Connect;
@@ -91,11 +92,11 @@ var Provider = (function (superclass) {
 }(React.Component));
 
 Provider.propTypes = {
-  store: React.PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
 };
 
 Provider.childContextTypes = {
-  store: React.PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
 };
 
 export { connect, Provider };

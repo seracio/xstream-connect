@@ -1,5 +1,6 @@
 // @flow
 import _ from 'lodash/fp';
+import PropTypes from 'prop-types';
 import React from 'react';
 import xs from 'xstream';
 
@@ -54,7 +55,7 @@ const connect = storeToPropsFunc => WrappedComponent => {
     }
   }
   Connect.contextTypes = {
-    store: React.PropTypes.object.isRequired,
+    store: PropTypes.object.isRequired,
   };
 
   return Connect;

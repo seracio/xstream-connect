@@ -1,10 +1,12 @@
-exports[`test Provider: only the child should be rendered 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Provider: only the child should be rendered 1`] = `
 <div>
   hello world
 </div>
 `;
 
-exports[`test Provider: the child component should have a context with a key "store" 1`] = `
+exports[`Provider: the child component should have a context with a key "store" 1`] = `
 <div>
   hello world
 </div>

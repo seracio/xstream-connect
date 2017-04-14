@@ -5,6 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var _ = _interopDefault(require('lodash/fp'));
+var PropTypes = _interopDefault(require('prop-types'));
 var React = _interopDefault(require('react'));
 var xs = _interopDefault(require('xstream'));
 
@@ -68,7 +69,7 @@ var connect = function (storeToPropsFunc) { return function (WrappedComponent) {
     return Connect;
   }(React.Component));
   Connect.contextTypes = {
-    store: React.PropTypes.object.isRequired,
+    store: PropTypes.object.isRequired,
   };
 
   return Connect;
@@ -97,11 +98,11 @@ var Provider = (function (superclass) {
 }(React.Component));
 
 Provider.propTypes = {
-  store: React.PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
 };
 
 Provider.childContextTypes = {
-  store: React.PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
 };
 
 exports.connect = connect;

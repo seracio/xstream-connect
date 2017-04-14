@@ -14,12 +14,12 @@ module.exports = {
   targets: [{
     dest: pkg.main,
     format: 'cjs'
-  },{
+  }, {
     dest: pkg.module,
     format: 'es'
   }],
   sourceMap: false,
-  external: ['react', 'xstream', 'lodash/fp'],
+  external: ['react', 'xstream', 'lodash/fp', 'prop-types'],
   plugins: [
     commonjs(),
     resolve(),
