@@ -34,7 +34,7 @@ the React layer in a *react-redux* fashion.
 import React from 'react';
 import ReactDOM from 'react-dom';
 import xs from 'xstream';
-import {connect, Provider} from 'xstream-connect';
+import {connect, Provider} from '@seracio/xstream-connect';
 
 const store = {
   count$: xs.periodic(1000).startWith(0),
@@ -73,7 +73,7 @@ the store props of the Provide component is just a hash/dictionary of *Streams* 
 // main.js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider} from 'xstream-connect';
+import {Provider} from '@seracio/xstream-connect';
 import * as store from './store'; // <---- your store is just a dictionnary of exposed Streams
 
 ReactDOM.render(
@@ -93,7 +93,7 @@ It will listen to all Streams provided in the *mapStateToProps* and deliver thei
 ```javascript
 // components/MyComp.js
 import React from 'react';
-import {connect} from 'xstream-connect'; 
+import {connect} from '@seracio/xstream-connect'; 
 
 class MyComp extends React.Component {   
   render(){
@@ -142,7 +142,7 @@ export const counter$ = actions$
 
 ```javascript
 // main.js
-import {Provider} from 'xstream-connect';
+import {Provider} from '@seracio/xstream-connect';
 import * as store from './store'; // dispatcher$ is exposed 
 
 // ...
@@ -152,7 +152,7 @@ import * as store from './store'; // dispatcher$ is exposed
 
 ```javascript
 // components/MyComponent.js
-import {connect} from 'xstream-connect';
+import {connect} from '@seracio/xstream-connect';
 
 class MyComponent extends React.Component {
   
