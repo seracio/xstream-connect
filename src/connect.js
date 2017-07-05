@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import xs from 'xstream';
 
-const connect = storeToPropsFunc => WrappedComponent => {
+const connect = (storeToPropsFunc, combinator) => WrappedComponent => {
 
   if (typeof(storeToPropsFunc) !== 'function') {
     throw new Error('xstream-connect: connect needs a function storeToPropsFunc as parameter');
