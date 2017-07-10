@@ -1,0 +1,15 @@
+// Placez vos paramètres dans ce fichier pour remplacer les paramètres par défaut et les paramètres utilisateur.
+{
+    "prettier.singleQuote": true,
+    "prettier.eslintIntegration": true,
+    "flowide.enabled": false,
+    "git.enableSmartCommit": true,
+    "javascript.validate.enable": false,
+    "files.associations": {
+        "*.jsx": "javascriptreact"
+    },
+    "prettier.trailingComma": "none",
+    "prettier.jsonEnable": [],
+    "prettier.tabWidth": 4,
+    "prettier.printWidth": 100
+}
