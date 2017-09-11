@@ -2,6 +2,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+type State = { [key: string]: any };
+
 const connect = (combinator: Function) => (WrappedComponent: any) => {
     if (typeof combinator !== 'function') {
         throw new Error('xstream-connect: connect needs a combinator function as parameter');
@@ -12,7 +14,12 @@ const connect = (combinator: Function) => (WrappedComponent: any) => {
         // rendering of the encapsulated component
         go: boolean;
         // state declaration for flow
-        state: { [string]: any };
+        state: State;
+        // listener
+        listener: { [key: string]: Function };
+        // stream
+        stream: Function;
+
         constructor(props: Object, context: Object) {
             super(props, context);
             // there will be no rendering of
@@ -24,15 +31,14 @@ const connect = (combinator: Function) => (WrappedComponent: any) => {
         }
 
         componentDidMount() {
-            this.listen();
-        }
-
-        listen() {
-            const stream = combinator(this.context.store);
-            if (typeof stream === 'undefined' || typeof stream.addListener !== 'function') {
+            this.stream = combinator(this.context.store);
+            if (
+                typeof this.stream === 'undefined' ||
+                typeof this.stream.addListener !== 'function'
+            ) {
                 throw new Error('xstream-connect: combinator should return a Stream');
             }
-            stream.addListener({
+            this.listener = {
                 next: state => {
                     if (!(state instanceof Object) || Object.keys(state) === 0) {
                         throw new Error(
@@ -42,7 +48,12 @@ const connect = (combinator: Function) => (WrappedComponent: any) => {
                     this.go = true;
                     this.setState(state);
                 }
-            });
+            };
+            this.listener = this.stream.addListener(this.listener);
+        }
+
+        componentWillUnmount() {
+            this.stream.removeListener(this.listener);
         }
 
         render() {

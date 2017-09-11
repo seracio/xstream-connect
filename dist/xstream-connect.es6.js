@@ -23,17 +23,16 @@ var connect = function (combinator          ) { return function (WrappedComponen
         Connect.prototype.constructor = Connect;
 
         Connect.prototype.componentDidMount = function componentDidMount () {
-            this.listen();
-        };
-
-        Connect.prototype.listen = function listen () {
             var this$1 = this;
 
-            var stream = combinator(this.context.store);
-            if (typeof stream === 'undefined' || typeof stream.addListener !== 'function') {
+            this.stream = combinator(this.context.store);
+            if (
+                typeof this.stream === 'undefined' ||
+                typeof this.stream.addListener !== 'function'
+            ) {
                 throw new Error('xstream-connect: combinator should return a Stream');
             }
-            stream.addListener({
+            this.listener = {
                 next: function (state) {
                     if (!(state instanceof Object) || Object.keys(state) === 0) {
                         throw new Error(
@@ -43,7 +42,12 @@ var connect = function (combinator          ) { return function (WrappedComponen
                     this$1.go = true;
                     this$1.setState(state);
                 }
-            });
+            };
+            this.listener = this.stream.addListener(this.listener);
+        };
+
+        Connect.prototype.componentWillUnmount = function componentWillUnmount () {
+            this.stream.removeListener(this.listener);
         };
 
         Connect.prototype.render = function render () {
