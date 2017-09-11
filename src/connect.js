@@ -49,7 +49,7 @@ const connect = (combinator: Function) => (WrappedComponent: any) => {
                     this.setState(state);
                 }
             };
-            this.listener = this.stream.addListener(this.listener);
+            this.stream.addListener(this.listener);
         }
 
         componentWillUnmount() {

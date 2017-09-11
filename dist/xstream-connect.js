@@ -49,7 +49,7 @@ var connect = function (combinator          ) { return function (WrappedComponen
                     this$1.setState(state);
                 }
             };
-            this.listener = this.stream.addListener(this.listener);
+            this.stream.addListener(this.listener);
         };
 
         Connect.prototype.componentWillUnmount = function componentWillUnmount () {
