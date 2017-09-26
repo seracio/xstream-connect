@@ -47,10 +47,15 @@ const App = ({count, hello}) => {
   return <div>{this.props.count} --- {this.props.hello}</div>;
 }
 
+// the combinator defines which part of your store 
+// will be exposed and realised the mapping from Streams to props
+const combinator = state => {
+  const {count$, hello$} = state;
+  return xs.combine(count$, hello$).map([count, hello] => ({count, hello}));
+}
+
 // We use a Higher order function connect to wrap our component and plug its props to the store values
-const Connected = connect(
-  ({count$, hello$}) => xs.combine(count$, hello$).map([count, hello] => ({count, hello}))
-)(App);
+const Connected = connect(combinator)(App);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -196,26 +201,9 @@ export default connect(combinator)(MyComponent);
 ### Caveats
 
 * Be aware that the HOC will wait for the first value of the combinator's Stream before rendering its wrapped component. 
-Its render method will return `null` before.
-* Because of this... specificity, you should not hesitate to use default values with your Streams.
+Its render method will return `null` before or a default component if defined (not yet documented).
+* Because of this... specificity, you should not hesitate to use default values with your Streams (at least in the combinator).
 * Remember the `remember` method, it will transform your Stream into a MemoryStream, an RxJS BehaviorSubject, kind of.
-* Don't close your sotre Streams. Yes... this is serious... The point here is that the Streams that compose your store are a dynamic representation of your data and their relationships.
-As this, we want them to be more like Promises, in the way that a Promise always returns its last (and only value) and never really `stops`. All your store Streams need to stay `open`.
-For instance, if your store relies on an initial fetch, instead of this:
-
-```javascript
-const myFetchedData$ = xs
-  .fromPromise(fetch('http://api.wathever.com').then(res => res.json()));
-```
-
-use this:
-
-```javascript
-const myFetchedData$ = xs.merge(
-  xs.fromPromise(fetch('http://api.wathever.com').then(res => res.json())),
-  xs.create(),
-).remember();
-```
 
 ## Why don't you use [cycle.js](https://cycle.js.org)?
 

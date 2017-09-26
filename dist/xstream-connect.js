@@ -8,7 +8,9 @@ var PropTypes = _interopDefault(require('prop-types'));
 var React = _interopDefault(require('react'));
 
 //      
-var connect = function (combinator          ) { return function (WrappedComponent     ) {
+var connect = function (combinator          ) { return function (WrappedComponent     , WaitingComponent) {
+    if ( WaitingComponent === void 0 ) WaitingComponent      = null;
+
     if (typeof combinator !== 'function') {
         throw new Error('xstream-connect: connect needs a combinator function as parameter');
     }
@@ -60,7 +62,11 @@ var connect = function (combinator          ) { return function (WrappedComponen
             // we pass the applicative props and inject the HOC state
             // too bad if there are conflicts
             var propsToTransfer = Object.assign({}, this.props, this.state);
-            return this.go ? React.createElement( WrappedComponent, propsToTransfer) : null;
+            if (this.go) {
+                return React.createElement( WrappedComponent, propsToTransfer);
+            } else {
+                return !!WaitingComponent ? React.createElement( WaitingComponent, this.props) : null;
+            }
         };
 
         return Connect;

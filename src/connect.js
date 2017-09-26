@@ -4,7 +4,7 @@ import React from 'react';
 
 type State = { [key: string]: any };
 
-const connect = (combinator: Function) => (WrappedComponent: any) => {
+const connect = (combinator: Function) => (WrappedComponent: any, WaitingComponent: any = null) => {
     if (typeof combinator !== 'function') {
         throw new Error('xstream-connect: connect needs a combinator function as parameter');
     }
@@ -60,7 +60,11 @@ const connect = (combinator: Function) => (WrappedComponent: any) => {
             // we pass the applicative props and inject the HOC state
             // too bad if there are conflicts
             const propsToTransfer = { ...this.props, ...this.state };
-            return this.go ? <WrappedComponent {...propsToTransfer} /> : null;
+            if (this.go) {
+                return <WrappedComponent {...propsToTransfer} />;
+            } else {
+                return !!WaitingComponent ? <WaitingComponent {...this.props} /> : null;
+            }
         }
     }
 
