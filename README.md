@@ -14,12 +14,12 @@ yarn add react react-dom prop-types xstream @seracio/xstream-connect
 
 This package feets well the way we work and the problems we face 
 (small size stores but complex async workflow on derived data). 
-It's mostly intended to our own developments and is not well tested, the paradigm it relies on is....
+It's mostly intended to our own developments and is not well tested.
 
 The purpose here is not to provide an async middleware to a redux store with Streams, 
 as [redux-cycle-middleware](https://github.com/cyclejs-community/redux-cycle-middleware) 
 and [redux-observable](https://github.com/redux-observable/redux-observable) do 
-but to replace *redux* and its different slices (*async middlewares*, *reducers* and *derived data*) with *(Memory)Streams*.
+but to replace *redux* and its different slices (*async middlewares*, *reducers* and *derived data*) with *MemoryStreams*.
 As this, we can express each variable of the store as a function of other variables, in a clean and async way.
 
 [xstream](https://github.com/staltz/xstream)'s Streams are the perfect tool to achieve this goal, as they are hot
@@ -45,14 +45,14 @@ const store = {
 
 const App = ({count, hello}) => { 
   return <div>{this.props.count} --- {this.props.hello}</div>;
-}
+};
 
 // the combinator defines which part of your store 
 // will be exposed and realised the mapping from Streams to props
 const combinator = state => {
   const {count$, hello$} = state;
   return xs.combine(count$, hello$).map([count, hello] => ({count, hello}));
-}
+};
 
 // We use a Higher order function connect to wrap our component and plug its props to the store values
 const Connected = connect(combinator)(App);
@@ -90,19 +90,19 @@ ReactDOM.render(
 
 ### The connect function
 
-In the previous versions of this lib (<3.x.x), the `connect` function was less complicated but also far less powerful and more "magical" (in the wrong way of the term).
-
 The `connect` function takes a single function as param.
 This function, called the `combinator`, expressed two things: 
+
 * what part of the store our component will subscribe to
 * and when will it receive props updates 
 
-To put it another way, the `combinator` receives the Provider's store and will return a new Stream that combine the part of the store we want our component to be aware of.
+To put it another way, the `combinator` receives the Provider's store as param and will return **a unique Stream** that combine the parts of the store we want our component to be aware of.
+The value of this Stream will be as **a plain object** (as React's components are expected props).
 
-For example: 
+For instance: 
 
 ```javascript
-state => {
+const combinator = state => {
   const {list$, selected$} = state;
   return xs
     .combine(list$, selected$)
@@ -133,7 +133,18 @@ state => {
 }
 ```
 
-What matters is to return a Stream that has a dictionary as value. This dictionary will be merged with the props of the enhanced component.
+### Waiting component
+
+Be aware that the HOC will wait for the first value of the combinator's Stream before rendering its component. 
+Its render method will return `null` before or a default component if defined.
+
+You can specify a Waiting component as this:
+
+```javascript
+connect(combinator)(MyComponent, WaitingComponent);
+```
+
+The waiting component will receive all props of MyComponent that are not provided by the combinator.
 
 ### How to dispatch actions from the React layer to the store?
 
@@ -197,13 +208,6 @@ const combinator = (state) => state.counter$
 // plug the component with the store
 export default connect(combinator)(MyComponent);
 ```
-
-### Caveats
-
-* Be aware that the HOC will wait for the first value of the combinator's Stream before rendering its wrapped component. 
-Its render method will return `null` before or a default component if defined (not yet documented).
-* Because of this... specificity, you should not hesitate to use default values with your Streams (at least in the combinator).
-* Remember the `remember` method, it will transform your Stream into a MemoryStream, an RxJS BehaviorSubject, kind of.
 
 ## Why don't you use [cycle.js](https://cycle.js.org)?
 
