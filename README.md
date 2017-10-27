@@ -12,9 +12,6 @@ yarn add react react-dom prop-types xstream @seracio/xstream-connect
 
 ## Disclaimer
 
-This package feets well the way we work and the problems we face 
-(small size stores but complex async workflow on derived data).
-
 The purpose here is not to provide an async middleware to a redux store with Streams, 
 as [redux-cycle-middleware](https://github.com/cyclejs-community/redux-cycle-middleware) 
 and [redux-observable](https://github.com/redux-observable/redux-observable) do 
