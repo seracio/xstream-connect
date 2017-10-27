@@ -13,8 +13,7 @@ yarn add react react-dom prop-types xstream @seracio/xstream-connect
 ## Disclaimer
 
 This package feets well the way we work and the problems we face 
-(small size stores but complex async workflow on derived data). 
-It's mostly intended to our own developments and is not well tested.
+(small size stores but complex async workflow on derived data).  It's mostly intended to our own developments.
 
 The purpose here is not to provide an async middleware to a redux store with Streams, 
 as [redux-cycle-middleware](https://github.com/cyclejs-community/redux-cycle-middleware) 
@@ -39,27 +38,26 @@ import {connect, Provider} from '@seracio/xstream-connect';
 
 // A store is just a dictionary of exposed Streams
 const store = {
-  count$: xs.periodic(1000).startWith(0),
-  hello$: xs.of('hello')
+  count$: xs.periodic(1000).startWith(0)
 };
 
-const App = ({count, hello}) => { 
-  return <div>{this.props.count} --- {this.props.hello}</div>;
+const App = ({count}) => { 
+  return <div>{this.props.count}</div>;
 };
 
 // the combinator defines which part of your store 
 // will be exposed and realised the mapping from Streams to props
 const combinator = state => {
   const {count$, hello$} = state;
-  return xs.combine(count$, hello$).map([count, hello] => ({count, hello}));
+  return xs.combine(count$).map(count => ({count}));
 };
 
 // We use a Higher order function connect to wrap our component and plug its props to the store values
-const Connected = connect(combinator)(App);
+const ConnectedApp = connect(combinator)(App);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Connected />
+    <ConnectedApp />
   </Provider>,
   document.querySelector('#root')
 );
@@ -69,8 +67,8 @@ ReactDOM.render(
 
 ### Store and the Provider component
 
-With this architecture, all the logic resides in *Streams*, 
-the store props of the Provide component is just a hash/dictionary of *Streams* (or static values) you want to expose to the React layer.  
+Within this architecture, all the logic resides in *Streams*.  
+The store props of the Provide component is just a hash/dictionary of *Streams* (or static values) you want to expose to the React layer.  
    
 ```javascript
 // main.js
@@ -93,11 +91,11 @@ ReactDOM.render(
 The `connect` function takes a single function as param.
 This function, called the `combinator`, expressed two things: 
 
-* what part of the store our component will subscribe to
+* what parts of the store our component will subscribe to
 * and when will it receive props updates 
 
 To put it another way, the `combinator` receives the Provider's store as param and will return **a unique Stream** that combine the parts of the store we want our component to be aware of.
-The value of this Stream will be as **a plain object** (as React's components are expected props).
+The value of this Stream will be **a plain object** {key => value} (as React's components are expected props).
 
 For instance: 
 
@@ -113,7 +111,7 @@ const combinator = state => {
 or if you only want props to update when selected$ changes, you can use a [`sampleCombine`](https://github.com/staltz/xstream/blob/master/EXTRA_DOCS.md#-samplecombinestreams)
 
 ```javascript
-state => {
+const combinator = state => {
   const {list$, selected$} = state;
   return selected$
     .compose(sampleCombine(list$))
@@ -124,7 +122,7 @@ state => {
 or if you only want props to update when selected$'s id changes
 
 ```javascript
-state => {
+const combinator = state => {
   const {list$, selected$} = state;
   return selected$
     .compose(dropRepeats(isIdEqual))
@@ -145,6 +143,19 @@ connect(combinator)(MyComponent, WaitingComponent);
 ```
 
 The waiting component will receive all props of MyComponent that are not provided by the combinator.
+
+Of course, you can also compose the combinator's Stream with a `startWith` operator:
+
+```javascript
+const combinatr = state => {
+  const {myStream$} = state;
+  return myStream$
+    .startWith(null)
+    .map(data => ({data}));
+}
+```
+
+## Common patterns and caveats
 
 ### How to dispatch actions from the React layer to the store?
 
@@ -171,7 +182,9 @@ const isType = type => _.flow(_.get('type'), _.isEqual(type));
 export const counter$ = actions$
   .filter(isType('increment'))
   .fold(acc => acc + 1, 0)
-  .startWith(0);
+  .startWith(0)
+  .remember(); 
+// note that startWith() already returns a MemoryStream, remember() is not needed here 
 ```
 
 * expose your store into the React layer context 
@@ -208,6 +221,29 @@ const combinator = (state) => state.counter$
 // plug the component with the store
 export default connect(combinator)(MyComponent);
 ```
+
+### How to manage Promises Streams and other Streams that complete?
+
+`fromPromise` Streams can be tricky as they will complete as soon as their inner Promise is resolved:
+
+```javascript
+import {getAsyncData} from '../services';
+
+const data$ = xs.fromPromise(getAsyncData()).remember();
+```
+
+This is problematic with complex async flow, especially if you use `sampleCombine` or `combine` operators.
+I advise you to transform `fromPromise` Streams as this:
+
+```javascript
+const data$ = xs
+  .merge(
+    xs.create(), 
+    xs.fromPromise(getAsyncData())
+  ).remember();
+```
+
+We can generalize this rule with all `completable` Streams.
 
 ## Why don't you use [cycle.js](https://cycle.js.org)?
 
