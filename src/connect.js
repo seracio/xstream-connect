@@ -1,15 +1,20 @@
 // @flow
-import PropTypes from 'prop-types';
 import React from 'react';
+import StoreContext from './StoreContext';
 
 type State = { [key: string]: any };
 
-const connect = (combinator: Function) => (WrappedComponent: any, WaitingComponent: any = null) => {
+const connect = (combinator: Function) => (
+    WrappedComponent: any,
+    WaitingComponent: any = null
+) => {
     if (typeof combinator !== 'function') {
-        throw new Error('xstream-connect: connect needs a combinator function as parameter');
+        throw new Error(
+            'xstream-connect: connect needs a combinator function as parameter'
+        );
     }
 
-    class Connect extends React.Component {
+    class Connect extends React.PureComponent<*, State> {
         // flag to launch the first
         // rendering of the encapsulated component
         go: boolean;
@@ -36,11 +41,16 @@ const connect = (combinator: Function) => (WrappedComponent: any, WaitingCompone
                 typeof this.stream === 'undefined' ||
                 typeof this.stream.addListener !== 'function'
             ) {
-                throw new Error('xstream-connect: combinator should return a Stream');
+                throw new Error(
+                    'xstream-connect: combinator should return a Stream'
+                );
             }
             this.listener = {
                 next: state => {
-                    if (!(state instanceof Object) || Object.keys(state) === 0) {
+                    if (
+                        !(state instanceof Object) ||
+                        Object.keys(state) === 0
+                    ) {
                         throw new Error(
                             'xstream-connect: combinator should return a Stream of key => values'
                         );
@@ -63,14 +73,12 @@ const connect = (combinator: Function) => (WrappedComponent: any, WaitingCompone
             if (this.go) {
                 return <WrappedComponent {...propsToTransfer} />;
             } else {
-                return !!WaitingComponent ? <WaitingComponent {...this.props} /> : null;
+                return !!WaitingComponent ? (
+                    <WaitingComponent {...this.props} />
+                ) : null;
             }
         }
     }
-
-    Connect.contextTypes = {
-        store: PropTypes.object.isRequired
-    };
 
     return Connect;
 };

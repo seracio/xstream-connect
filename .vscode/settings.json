@@ -11,10 +11,6 @@
     },
     "files.autoSave": "off",
     "flow.fileExtensions": [".js", ".mjs", ".jsx", ".flow"],
-    "typescript.format.enable": false,
-    "typescript.check.npmIsInstalled": false,
-    "typescript.autoImportSuggestions.enabled": false,
-    "typescript.tsc.autoDetect": "off",
-    "typescript.validate.enable": false,
-    "jsDocCompletion.enabled": false
+    "jsDocCompletion.enabled": false,
+    "typescript.disableAutomaticTypeAcquisition": true
 }
