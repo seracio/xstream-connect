@@ -1,18 +1,20 @@
 // Placez vos paramètres dans ce fichier pour remplacer les paramètres par défaut et les paramètres utilisateur.
 {
-    "prettier.singleQuote": true,
-    "prettier.eslintIntegration": true,
-    "flowide.enabled": true,
-    "git.enableSmartCommit": true,
     "javascript.validate.enable": false,
-    "files.associations": {
-        "*.jsx": "javascriptreact"
-    },
-    "prettier.trailingComma": "none",
-    "prettier.jsonEnable": [],
-    "prettier.tabWidth": 4,
-    "prettier.printWidth": 100,
     "flow.enabled": true,
     "flow.pathToFlow": "flow",
-    "flow.useNPMPackagedFlow": true
+    "flow.useNPMPackagedFlow": true,
+    "prettier.tabWidth": 4,
+    "prettier.printWidth": 80,
+    "files.associations": {
+        "*.js": "javascriptreact"
+    },
+    "files.autoSave": "off",
+    "flow.fileExtensions": [".js", ".mjs", ".jsx", ".flow"],
+    "typescript.format.enable": false,
+    "typescript.check.npmIsInstalled": false,
+    "typescript.autoImportSuggestions.enabled": false,
+    "typescript.tsc.autoDetect": "off",
+    "typescript.validate.enable": false,
+    "jsDocCompletion.enabled": false
 }

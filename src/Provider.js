@@ -1,29 +1,27 @@
 // @flow
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { createContext, PureComponent } from 'react';
 
-class Provider extends React.Component {
+const StoreContext = createContext({});
 
-  constructor(props, context) {
-    super(props, context);
-    this.store = props.store;
-  }
+type Props = {
+    store: { [key: string]: Function },
+    waitFor: Array<string>,
+    children: any
+};
 
-  getChildContext() {
-    return { store: this.store };
-  }
+class Provider extends PureComponent<Props> {
+    constructor(props, context) {
+        super(props, context);
+        this.store = props.store;
+    }
 
-  render(){
-    return React.Children.only(this.props.children);
-  }
+    render() {
+        return (
+            <StoreContext.Provider>
+                {React.Children.only(this.props.children)}
+            </StoreContext.Provider>
+        );
+    }
 }
-
-Provider.propTypes = {
-  store: PropTypes.object.isRequired,
-};
-
-Provider.childContextTypes = {
-  store: PropTypes.object.isRequired,
-};
 
 export default Provider;
