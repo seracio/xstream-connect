@@ -1,6 +1,6 @@
 // @flow
-import React from 'react';
+import React, { createContext } from 'react';
 
-const StoreContext = React.createContext(null);
+const StoreContext = createContext(null);
 
 export default StoreContext;

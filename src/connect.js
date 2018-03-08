@@ -25,8 +25,8 @@ const connect = (combinator: Function) => (
         // stream
         stream: Function;
 
-        constructor(props: Object, context: Object) {
-            super(props, context);
+        constructor(props: Object) {
+            super(props);
             // there will be no rendering of
             // the encapsulated component
             // before the first tick
