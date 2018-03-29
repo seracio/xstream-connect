@@ -36,7 +36,7 @@ const connect = (combinator: Function) => (
         }
 
         componentDidMount() {
-            this.stream = combinator(this.context.store);
+            this.stream = combinator(StoreContext.currentValue);
             if (
                 typeof this.stream === 'undefined' ||
                 typeof this.stream.addListener !== 'function'

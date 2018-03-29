@@ -1,5 +1,4 @@
 const { BABEL_ENV, NODE_ENV } = process.env;
-const cjs = BABEL_ENV === 'cjs' || NODE_ENV === 'test';
 
 const presetsSandbox = [
     '@babel/preset-flow',
@@ -34,5 +33,5 @@ module.exports = {
         '@babel/plugin-proposal-class-properties',
         '@babel/plugin-proposal-object-rest-spread'
     ],
-    presets: BABEL_ENV === 'sandbox' ? presetsSandbox : presetsProduction
+    presets: presetsSandbox
 };
